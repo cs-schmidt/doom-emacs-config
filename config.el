@@ -57,6 +57,18 @@
 (setq doom-font (font-spec :family "Source Code Pro" :size 13 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "Fira Sans" :size 12))
 
+;;;; UI
+;; ----------------------------------------------------------------------
+(use-package! treemacs
+  :init
+  (setq +treemacs-git-mode 'deferred)
+  :config
+  (with-eval-after-load 'doom-themes
+    (doom-themes-treemacs-config))
+  :custom
+  (doom-themes-treemacs-theme "doom-colors")
+  (treemacs-width 30))
+
 ;;;; Editing
 ;; ----------------------------------------------------------------------
 ;; Sets the type of line numbering used by `display-line-numbers-mode'. If set
