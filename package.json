@@ -1,0 +1,26 @@
+{
+  "private": true,
+  "description": "My ever-evolving Doom Emacs configuration.",
+  "homepage": "https://github.com/CS-Schmidt/doom-emacs-config#readme",
+  "bugs": {
+    "url": "https://github.com/CS-Schmidt/doom-emacs-config/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CS-Schmidt/doom-emacs-config.git"
+  },
+  "author": {
+    "name": "Ethan Schmidt",
+    "email": "es.schmidt.cs@gmail.com",
+    "url": "https://github.com/CS-Schmidt"
+  },
+  "license": "MIT",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.6",
+    "@commitlint/config-conventional": "^17.6.6",
+    "husky": "^8.0.3"
+  }
+}

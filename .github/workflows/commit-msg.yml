@@ -1,0 +1,35 @@
+# Commit Message Hook
+#
+# Github workflow which lints git commit messages from pushes or pull requests
+# using the Conventional Commit standard.
+#
+name: "Commit Message Hook"
+on: ["push", "pull_request"]
+jobs:
+  lint-commit-msg:
+    runs-on: "ubuntu-latest"
+    steps:
+      # Fetch all git history from project.
+      - uses: "actions/checkout@v3"
+        with:
+          fetch-depth: 0
+      # Set up Node.js in the runner.
+      - uses: "actions/setup-node@v3"
+        with:
+          node-version: "18"
+      - name: "Install commitlint dependencies"
+        run: |
+          npm install @commitlint/cli@17
+          npm install @commitlint/config-conventional@17
+      - name: "Validate current (last) commit message"
+        if: github.event_name == 'push'
+        run: "npx commitlint --from HEAD~1 --to HEAD --extends @commitlint/config-conventional --verbose"
+      - name: "Validate pull-request commit message"
+        if: github.event_name == 'pull_request'
+        run: >
+          npx commitlint\
+          --from ${{github.event.pull_request.head.sha}}~${{github.event.pull_request.commits}}\
+          --to ${{github.event.pull_request.head.sha}}\
+          --extends @commitlint/config-conventional\
+          --verbose
+
