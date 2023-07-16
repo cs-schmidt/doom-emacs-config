@@ -34,7 +34,7 @@
 
 ;;;; Styling
 ;; ----------------------------------------------------------------------
-(setq doom-theme 'doom-spacegrey)
+(setq doom-theme 'doom-badger)
 
 ;; Sets the default opacity across both active and inactive frames.
 (add-to-list 'default-frame-alist '(alpha . (95 95)))
@@ -97,6 +97,56 @@
 ;; Sets the default location where org files are created. It must be set before
 ;; org loads.
 (setq org-directory "~/org/")
+
+;; TODO: Improve matching in `org-emphasis-regexp-components'.
+(after! org
+  (defface zzz/org-link-id '((t :inherit org-link :bold nil :underline nil))
+    "Face for `org-mode' links prefixed with 'id:'."
+    :group 'org-faces)
+  (org-link-set-parameters "id" :face 'zzz/org-link-id)
+  (custom-theme-set-faces 'user
+                          '(org-document-title ((t . ((:height 1.4 :underline nil)))))
+                          '(org-level-1 ((t . ((:inherit outline-1 :height 1.3)))))
+                          '(org-level-2 ((t . ((:inherit outline-2 :height 1.2)))))
+                          '(org-level-3 ((t . ((:inherit outline-3 :height 1.1)))))
+                          '(org-footnote ((t . ((:weight bold :underline nil))))))
+  (setq! org-pretty-entities t
+         org-fontify-quote-and-verse-blocks t
+         org-startup-with-latex-preview t
+         org-startup-folded t
+         org-startup-indented nil
+         org-emphasis-alist '(("*" (:foreground "#bb6dc4" :weight bold))
+                              ("/" (:foreground "#2c9372" :slant italic))
+                              ("_" (:underline t))
+                              ("=" org-verbatim verbatim)
+                              ("~" (:foreground "#cc5279" :background "#171c21"))
+                              ("+" (:strike-through t)))
+         org-hide-emphasis-markers t))
+
+(use-package! org-modern
+  :after org
+  :init
+  (global-org-modern-mode)
+  :custom
+  (org-modern-list '((?- . "•")
+                     (?+ . "➤")))
+  (org-modern-tag nil)
+  (org-modern-table nil)
+  (org-modern-horizontal-rule nil))
+
+(use-package! org-appear
+  :after org
+  :hook
+  (org-mode . org-appear-mode)
+  :custom
+  (org-appear-autoemphasis t)
+  (org-appear-autolinks t)
+  (org-appear-inside-latex t))
+
+(use-package! valign
+  :after org
+  :hook
+  (org-mode . valign-mode))
 
 ;;;; Org Roam
 ;; ----------------------------------------------------------------------

@@ -58,4 +58,8 @@
 ;;
 ;; Code:
 
+(package! org-modern)
+(package! org-appear)
+(package! valign)
+
 ;;; packages.el ends here
