@@ -57,6 +57,11 @@
 (setq doom-font (font-spec :family "Source Code Pro" :size 13 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "Fira Sans" :size 12))
 
+;;;; Completion
+;; ---------------------------------------------------------------------
+(after! which-key
+  (setq which-key-idle-delay 0.3))
+
 ;;;; UI
 ;; ----------------------------------------------------------------------
 (use-package! treemacs
