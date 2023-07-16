@@ -98,7 +98,8 @@
 ;; org loads.
 (setq org-directory "~/org/")
 
-;; TODO: Improve matching in `org-emphasis-regexp-components'.
+;; TODO: Improve matching in `org-emphasis-regexp-components', see `org-emph-re'
+;;       to view the full regex `org-mode' uses to match emphasized text.
 (after! org
   (defface zzz/org-link-id '((t :inherit org-link :bold nil :underline nil))
     "Face for `org-mode' links prefixed with 'id:'."
@@ -128,8 +129,7 @@
   :init
   (global-org-modern-mode)
   :custom
-  (org-modern-list '((?- . "•")
-                     (?+ . "➤")))
+  (org-modern-list '((?- . "•") (?+ . "➤")))
   (org-modern-tag nil)
   (org-modern-table nil)
   (org-modern-horizontal-rule nil))
@@ -165,5 +165,13 @@
                                                           (make-string 80 ?-))))
                                        :unarrowed t)))
   (org-roam-db-autosync-mode))
+
+(use-package! org-roam-ui
+  :after org-roam
+  :config
+  (setq org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t))
 
 ;;; config.el ends here

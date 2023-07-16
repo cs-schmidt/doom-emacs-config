@@ -61,5 +61,6 @@
 (package! org-modern)
 (package! org-appear)
 (package! valign)
+(package! org-roam-ui)
 
 ;;; packages.el ends here
