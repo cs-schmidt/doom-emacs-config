@@ -64,6 +64,12 @@
 ;; `relative'. (default t)
 (setq display-line-numbers-type t)
 
+;; Sets the `fill-column' and enables `display-fill-column-indicator-mode' in
+;; a list of desired major modes.
+(setq-default fill-column 80)
+(add-hook! '(text-mode-hook prog-mode-hook)
+           #'display-fill-column-indicator-mode)
+
 ;;;; Org Mode
 ;; ----------------------------------------------------------------------
 ;; Sets the default location where org files are created. It must be set before
