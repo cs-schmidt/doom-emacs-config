@@ -98,4 +98,22 @@
 ;; org loads.
 (setq org-directory "~/org/")
 
+;;;; Org Roam
+;; ----------------------------------------------------------------------
+(after! org-roam
+  (setq! org-roam-directory (file-truename "~/Study/personal-knowledge-management/notes/")
+         org-roam-node-display-template (format "${doom-hierarchy:*} %s"
+                                                (propertize "${doom-tags:42}" 'face 'org-tag))
+         org-roam-capture-templates `(("d" "Default capturing template." plain "%?"
+                                       :target (file+head+olp
+                                                "${slug}_%<%Y%m%d%H%M%S>.org"
+                                                ,(string-join `("#+FILETAGS: <subject> 📝 🌰"
+                                                                "#+TITLE: ${title}"
+                                                                ,(make-string 80 ?-))
+                                                              "\n")
+                                                (,(concat "References\n"
+                                                          (make-string 80 ?-))))
+                                       :unarrowed t)))
+  (org-roam-db-autosync-mode))
+
 ;;; config.el ends here
