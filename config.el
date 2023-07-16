@@ -1,7 +1,6 @@
 ;;; config.el --- Doom's main user config file -*- lexical-binding: t; -*-
 ;;
 ;;; Commentary:
-;;
 ;; Doom's primary configuration file, where 99.9% of your private configuration
 ;; should be written. This file loads after all other Doom modules have loaded.
 ;;
@@ -58,7 +57,7 @@
       doom-variable-pitch-font (font-spec :family "Fira Sans" :size 12))
 
 ;;;; Completion
-;; ---------------------------------------------------------------------
+;; ----------------------------------------------------------------------
 (after! which-key
   (setq which-key-idle-delay 0.3))
 
@@ -86,6 +85,12 @@
 (setq-default fill-column 80)
 (add-hook! '(text-mode-hook prog-mode-hook)
            #'display-fill-column-indicator-mode)
+
+;;;; Projectile
+;; ----------------------------------------------------------------------
+(after! projectile
+  (setq projectile-project-search-path '(("~/Work/personal-projects/" . 1)
+                                         "~/Study/personal-knowledge-management/")))
 
 ;;;; Org Mode
 ;; ----------------------------------------------------------------------
