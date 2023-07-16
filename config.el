@@ -1,8 +1,11 @@
-;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
-
-;; Place your private configuration here! Remember, you do not need to run 'doom
-;; sync' after modifying this file!
-
+;;; config.el --- Doom's main user config file -*- lexical-binding: t; -*-
+;;
+;;; Commentary:
+;;
+;; Doom's primary configuration file, where 99.9% of your private configuration
+;; should be written. This file loads after all other Doom modules have loaded.
+;;
+;;; Code:
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
@@ -74,3 +77,5 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+;;; config.el ends here

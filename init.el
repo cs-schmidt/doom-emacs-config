@@ -1,18 +1,19 @@
-;;; init.el -*- lexical-binding: t; -*-
-
-;; This file controls what Doom modules are enabled and what order they load
-;; in. Remember to run 'doom sync' after modifying it!
-
-;; NOTE Press 'SPC h d h' (or 'C-h d h' for non-vim users) to access Doom's
-;;      documentation. There you'll find a link to Doom's Module Index where all
-;;      of our modules are listed, including what flags they support.
-
-;; NOTE Move your cursor over a module's name (or its flags) and press 'K' (or
-;;      'C-c c k' for non-vim users) to view its documentation. This works on
-;;      flags as well (those symbols that start with a plus).
+;;; init.el --- Sets Doom's active modules -*- lexical-binding: t; -*-
 ;;
-;;      Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
-;;      directory (for easy access to its source code).
+;;; Commentary:
+;;
+;; Contains the `doom!' block which sets what Doom modules to enable and in what
+;; order they will they'll be loaded. This file loads early in Doom's startup
+;; process, before any other module has loaded. You must run `doom sync` from
+;; the command line and restart Emacs, or `doom/reload' to enable the changes
+;; made here.
+;;
+;; In general, you should only edit the `doom!' block. If you need to configure
+;; something very early in Doom's startup process, then it's usually better to
+;; use an `early-init.el` file (loading before doom), `doom-before-init-hook',
+;; or `before-init-hook'. See Doom's load order to make the best choice.
+;;
+;;; Code:
 
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
@@ -192,3 +193,5 @@
        :config
        ;;literate
        (default +bindings +smartparens))
+
+;;; init.el ends here
