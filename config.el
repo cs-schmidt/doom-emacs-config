@@ -53,7 +53,7 @@
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
 ;;
-(setq doom-font (font-spec :family "Source Code Pro" :size 13 :weight 'semi-light)
+(setq doom-font (font-spec :family "Source Code Pro" :size 12 :weight 'semi-light)
       doom-variable-pitch-font (font-spec :family "Fira Sans" :size 12))
 
 ;;;; Completion
@@ -86,11 +86,17 @@
 (add-hook! '(text-mode-hook prog-mode-hook)
            #'display-fill-column-indicator-mode)
 
+;; TODO: Add custom keybindings to lsp-mode.
+(use-package! lsp
+  :custom
+  (lsp-headerline-breadcrumb-enable t)
+  (lsp-headerline-breadcrumb-icons-enable t))
+;
 ;;;; Projectile
 ;; ----------------------------------------------------------------------
 (after! projectile
-  (setq projectile-project-search-path '(("~/Work/personal-projects/" . 1)
-                                         "~/Study/personal-knowledge-management/")))
+  (setq! projectile-project-search-path '(("~/Work/personal-projects/" . 1)
+                                           "~/Study/personal-knowledge-management/")))
 
 ;;;; Org Mode
 ;; ----------------------------------------------------------------------
