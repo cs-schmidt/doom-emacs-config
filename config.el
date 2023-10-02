@@ -25,99 +25,36 @@
 ;;
 ;;; Code:
 
-;; NOTE: There are five variables for configuring Doom's fonts: `doom-font',
-;; `doom-serif-font', `doom-variable-pitch-font', `doom-big-font', and
-;; `doom-unicode-font'.
-(setq! doom-theme 'doom-one
-       doom-font (font-spec
-                  :family "Source Code Pro"
-                  :size 13)
-       doom-variable-pitch-font (font-spec
-                                 :family "Fira Sans"
-                                 :size 12))
-;; Adjusts the opacity of frames: both active and inactive.
-(add-to-list 'default-frame-alist '(alpha . (90 90)))
-
+;;; User Settings
+;; ----------------------------------------------------------------------
 ;; Certain functionality uses this information to identify you: GPG
 ;; configuration, email clients, file templates and snippets, etc. It is
 ;; optional.
 (setq! user-full-name "Ethan Schmidt"
-       user-mail-address "es.schmidt.cs@gmail.com")
+       user-mail-address "ebs.euler@gmail.com")
 
+;;; Doom Settings
+;; ----------------------------------------------------------------------
+(setq! doom-theme 'doom-one
+       ;; NOTE: There are five variables for configuring Doom's fonts:
+       ;;      `doom-font', `doom-serif-font', `doom-variable-pitch-font',
+       ;;      `doom-big-font', and `doom-unicode-font'.
+       doom-font (font-spec :family "Noto Sans Mono" :size 12)
+       doom-variable-pitch-font (font-spec :family "Noto Sans" :size 12)
+       doom-unicode-font (font-spec :family "Noto Color Emoji"))
+;; Adjusts the opacity of frames: both active and inactive.
+(add-to-list 'default-frame-alist '(alpha . (90 90)))
+
+;;; Text Editing
+;; ----------------------------------------------------------------------
 (setq! display-line-numbers-type t)
 (setq-default fill-column 80)
-(add-hook! '(text-mode-hook prog-mode-hook)
-           #'display-fill-column-indicator-mode)
+(add-hook! '(text-mode-hook prog-mode-hook) #'display-fill-column-indicator-mode)
 ;; NOTE: Can prevent images from being displayed in org mode.
 ;; (setq! image-file-name-extensions (delete "svg" image-file-name-extensions))
 
-(defun user/after-init-hook ()
-  "Executes code that must be loaded after Emacs executes init.el"
-  ;; REVIEW: Supposed to disable `solaire-mode' globally.
-  (solaire-global-mode -1))
-
-(defun user/disable-visual-line-mode ()
-  (visual-line-mode -1))
-
-(after! which-key
-  (setq which-key-idle-delay 0.25))
-(after! vterm
-  (set-popup-rule! "*doom:vterm-popup:*"
-    :size 0.25 :vslot -4 :select t :quit nil :ttl 0))
-(add-hook! after-init-hook #'user/after-init-hook)
-
-;; BUG: Error: failed to incrementally load org because: (wrong-type-argument listp t).
-;; BUG: Error /home/es-schmidt/.emacs.d/.local/straight/build-28.2/emacsql/sqlite/emacsql-sqlite has failed immediately.
-(after! org
-  (defface pkms/org-link-id '((t :inherit org-link :bold nil :underline nil))
-    "Face for `org-mode' links prefixed with 'id:'."
-    :group 'org-faces)
-  (org-link-set-parameters "id" :face 'pkms/org-link-id)
-  (custom-theme-set-faces! 'user
-    '(org-document-title ((t . ((:height 1.4 :underline nil)))))
-    '(org-level-1        ((t . ((:inherit outline-1 :height 1.3)))))
-    '(org-level-2        ((t . ((:inherit outline-2 :height 1.2)))))
-    '(org-level-3        ((t . ((:inherit outline-3 :height 1.1)))))
-    '(org-footnote       ((t . ((:weight bold :underline nil))))))
-  ;; TODO: Improve `org-emphasis-regexp-components', look at `org-emph-re' to
-  ;;       view the full regex `org-mode' uses to match emphasized text.
-  ;; NOTE: `org-directory' should point towards the folder where your fleeting
-  ;;       notes are stored.
-  (setq! org-directory "~/org/"
-         org-pretty-entities t
-         org-fontify-quote-and-verse-blocks t
-         org-startup-with-latex-preview t
-         org-startup-with-inline-images t
-         org-startup-folded t
-         org-startup-indented nil
-         org-hide-emphasis-markers t
-         org-cycle-include-plain-lists 'integrate
-         org-format-latex-options (plist-put org-format-latex-options :scale 1.1)))
-
-(after! org-roam
-  (setq! org-roam-directory (file-truename "~/PKMS/notes/notes_deep/notes/")
-         org-roam-capture-templates
-         `(
-           ("d" "Fleeting Note" plain "%?"
-            :target
-            (file+head+olp
-             "${slug}_%<%Y%m%d%H%M%S>.org"
-             ;; (pkms/create-node-name)
-             ,(string-join
-               `(
-                 ;; "#+FILETAGS: <subject> 📝 🌰"
-                 ;; "#+TITLE: ${title}"
-                 "#FILETAGS: <value>"
-                 "#+TITLE: <value>"
-                 ,(make-string 80 ?-)
-                 ,(make-string 3 ?\n)))
-                 ,(concat "References\n" (make-string 80 ?-))))
-           :unnarrowed t)
-         org-roam-node-display-template
-         (format "${doom-heirarchy:*} %s"
-                 (propertize "${doom-tags:42}" 'face 'org-tag)))
-  (org-roam-db-autosync-mode))
-
+;;; Package Configuration
+;; ----------------------------------------------------------------------
 (use-package! treemacs
   :custom
   (doom-themes-treemacs-theme "doom-colors")
@@ -128,7 +65,15 @@
   (with-eval-after-load 'doom-themes
     (doom-themes-treemacs-config)))
 
-;; TODO: Add custom keybindings to lsp-mode.
+(use-package! projectile
+  :custom
+  (projectile-project-search-path '(("~/Work/" . 1)
+                                    ("~/Projects/" . 1)))
+  :config
+  (when (equal projectile-project-search-path nil)
+    (projectile-discover-projects-in-search-path)))
+
+;; ;; TODO: Add custom keybindings to lsp-mode.
 (use-package! lsp
   :custom
   (lsp-headerline-breadcrumb-enable t)
@@ -139,13 +84,67 @@
   (add-hook! org-mode-hook #'hl-todo-mode)
   (global-hl-todo-mode))
 
-(use-package! projectile
-  :custom
-  (projectile-project-search-path '(("~/Projects/" . 1)
-                                    ("~/Work/projects/" . 1)))
-  :config
-  (when (equal projectile-project-search-path nil)
-    (projectile-discover-projects-in-search-path)))
+;;; Processes: After Init
+;; ----------------------------------------------------------------------
+(defun user/after-init-hook ()
+  "Executes code that must be loaded after Emacs executes init.el"
+  (solaire-global-mode -1))
+
+(defun user/disable-visual-line-mode ()
+  (visual-line-mode -1))
+
+(after! which-key
+  (setq which-key-idle-delay 0.25))
+
+(after! vterm
+  (set-popup-rule! "*doom:vterm-popup:*"
+    :size 0.25 :vslot -4 :select t :quit nil :ttl 0))
+
+(add-hook! after-init-hook #'user/after-init-hook)
+
+;;; Research
+;; ----------------------------------------------------------------------
+;; TODO: Improve `org-emphasis-regexp-components', look at `org-emph-re' to view
+;;       the full regex `org-mode' uses to match emphasized text.
+(after! org
+  ;; (defface pkms/org-link-id '((t :inherit org-link :bold nil :underline nil))
+  ;;   "Face for `org-mode' links prefixed with 'id:'."
+  ;;   :group 'org-faces)
+  ;; (org-link-set-parameters "id" :face 'pkms/org-link-id)
+  (custom-theme-set-faces 'user
+    '(org-document-title ((t . ((:height 1.4 :underline nil)))))
+    '(org-level-1        ((t . ((:inherit outline-1 :height 1.3)))))
+    '(org-level-2        ((t . ((:inherit outline-2 :height 1.2)))))
+    '(org-level-3        ((t . ((:inherit outline-3 :height 1.1))))))
+  ;; NOTE: `org-directory' should be the directory where PKMS notes ("entires").
+  (setq! org-directory "~/Research/processing/"
+         org-startup-folded nil
+         org-startup-indented nil
+         org-startup-with-latex-preview t
+         org-startup-with-inline-images t
+         org-pretty-entities t
+         org-hide-emphasis-markers t
+         org-fontify-quote-and-verse-blocks t
+         org-cycle-include-plain-lists 'integrate
+         org-format-latex-options (plist-put org-format-latex-options :scale 1.1)))
+
+(after! org-roam
+  (setq! org-roam-directory (file-truename "~/Research/notes/")
+         org-roam-capture-templates
+         `(("d" "Knowledge node template" plain "%?"
+            :target
+            (file+head+olp
+             "${slug}_%<%Y%m%d%H%M%S>.org"
+             ,(string-join `("#+FILETAGS: @subject 📝 🌰"
+                             "#+TITLE: ${title}"
+                             ,(concat (make-string 80 ?-) "\n"))
+                           "\n")
+             ,(string-join `("References"
+                             ,(concat (make-string 80 ?-) "\n"))
+                           "\n"))
+            :unnarrowed t))
+         org-roam-node-display-template
+         (format "${doom-hierarchy:*} %s" (propertize "${doom-tags: 42}" 'face 'org-tag))))
 
 (use-package! org-modern
   :after org
@@ -156,9 +155,9 @@
   (org-modern-horizontal-rule nil)
   (org-modern-internal-target '("" t ""))
   :config
-  (custom-theme-set-faces!
-    'user '(org-modern-internal-target ((t . ((:inherit zzz/org-link-id))))))
-  (global-org-modern))
+  ;; (custom-theme-set-faces!
+  ;;   'user '(org-modern-internal-target ((t . ((:inherit pkms/org-link-id))))))
+  (global-org-modern-mode))
 
 (use-package! org-appear
   :after org
@@ -181,5 +180,12 @@
         org-roam-ui-follow t
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
+
+;; (setq! org-cite-csl-styles-dir "~/Zotero/styles")
+;; (setq! citar-bibliography '("~/Research/zotero.bib"))
+
+;(require 'oc-csl-activate)
+;(setq org-cite-activate-processor 'csl-activate)
+;(add-hook 'org-mode-hook (lambda () (cursor-sensor-mode 1)))
 
 ;;; config.el ends here

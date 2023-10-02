@@ -56,11 +56,15 @@
 ;;
 ;;   (unpin! t)
 ;;
-;; Code:
+;;; Code:
 
-(package! org-modern)
+;; (package! org :pin "17608670a4f4e8edb91efe04d86fe80ff9d01b69")
 (package! org-appear)
 (package! valign)
+(package! org-modern)
+(package! zotxt)
+(package! citeproc)
+;; (package! org-cite-csl-activate :recipe (:host github :repo "andras-simonyi/org-cite-csl-activate"))
 (package! org-roam-ui)
 
 ;;; packages.el ends here
