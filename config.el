@@ -15,7 +15,7 @@
 ;;
 ;; In general, when reconfiguring a package that's included by Doom you'll want
 ;; to wrap it within an `after!' black, otherwise Doom's defaults may override
-;; your settings. THe exceptions to this rule are as follows:
+;; your settings. The exceptions to this rule are as follows:
 ;;
 ;;  - Setting doom variables; these begin with 'doom-' or '+'.
 ;;  - Setting file/directory variables: e.g., `org-directory'.
@@ -42,16 +42,9 @@
        doom-font (font-spec :family "Noto Sans Mono" :size 12)
        doom-variable-pitch-font (font-spec :family "Noto Sans" :size 12)
        doom-unicode-font (font-spec :family "Noto Color Emoji"))
+
 ;; Adjusts the opacity of frames: both active and inactive.
 (add-to-list 'default-frame-alist '(alpha . (90 90)))
-
-;;; Text Editing
-;; ----------------------------------------------------------------------
-(setq! display-line-numbers-type t)
-(setq-default fill-column 80)
-(add-hook! '(text-mode-hook prog-mode-hook) #'display-fill-column-indicator-mode)
-;; NOTE: Can prevent images from being displayed in org mode.
-;; (setq! image-file-name-extensions (delete "svg" image-file-name-extensions))
 
 ;;; Package Configuration
 ;; ----------------------------------------------------------------------
@@ -73,7 +66,7 @@
   (when (equal projectile-project-search-path nil)
     (projectile-discover-projects-in-search-path)))
 
-;; ;; TODO: Add custom keybindings to lsp-mode.
+;; TODO: Add custom keybindings to lsp-mode.
 (use-package! lsp
   :custom
   (lsp-headerline-breadcrumb-enable t)
@@ -84,33 +77,23 @@
   (add-hook! org-mode-hook #'hl-todo-mode)
   (global-hl-todo-mode))
 
-;;; Processes: After Init
+;;; Text Editing
 ;; ----------------------------------------------------------------------
-(defun user/after-init-hook ()
-  "Executes code that must be loaded after Emacs executes init.el"
-  (solaire-global-mode -1))
-
-(defun user/disable-visual-line-mode ()
-  (visual-line-mode -1))
-
-(after! which-key
-  (setq which-key-idle-delay 0.25))
-
-(after! vterm
-  (set-popup-rule! "*doom:vterm-popup:*"
-    :size 0.25 :vslot -4 :select t :quit nil :ttl 0))
-
-(add-hook! after-init-hook #'user/after-init-hook)
+(setq! display-line-numbers-type t)
+(setq-default fill-column 80)
+(add-hook! '(text-mode-hook prog-mode-hook) #'display-fill-column-indicator-mode)
+;; NOTE: Can prevent images from being displayed in org mode.
+;; (setq! image-file-name-extensions (delete "svg" image-file-name-extensions))
 
 ;;; Research
 ;; ----------------------------------------------------------------------
 ;; TODO: Improve `org-emphasis-regexp-components', look at `org-emph-re' to view
 ;;       the full regex `org-mode' uses to match emphasized text.
 (after! org
-  ;; (defface pkms/org-link-id '((t :inherit org-link :bold nil :underline nil))
-  ;;   "Face for `org-mode' links prefixed with 'id:'."
-  ;;   :group 'org-faces)
-  ;; (org-link-set-parameters "id" :face 'pkms/org-link-id)
+  (defface pkms/org-link-id '((t :inherit org-link :bold nil :underline nil))
+    "Face for `org-mode' links prefixed with 'id:'."
+    :group 'org-faces)
+  (org-link-set-parameters "id" :face 'pkms/org-link-id)
   (custom-theme-set-faces 'user
     '(org-document-title ((t . ((:height 1.4 :underline nil)))))
     '(org-level-1        ((t . ((:inherit outline-1 :height 1.3)))))
@@ -187,5 +170,23 @@
 ;(require 'oc-csl-activate)
 ;(setq org-cite-activate-processor 'csl-activate)
 ;(add-hook 'org-mode-hook (lambda () (cursor-sensor-mode 1)))
+
+;;; Processes: After Init
+;; ----------------------------------------------------------------------
+(defun user/after-init-hook ()
+  "Executes code that must be loaded after Emacs executes init.el"
+  (solaire-global-mode -1))
+
+(defun user/disable-visual-line-mode ()
+  (visual-line-mode -1))
+
+(after! which-key
+  (setq which-key-idle-delay 0.25))
+
+(after! vterm
+  (set-popup-rule! "*doom:vterm-popup:*"
+    :size 0.25 :vslot -4 :select t :quit nil :ttl 0))
+
+(add-hook! after-init-hook #'user/after-init-hook)
 
 ;;; config.el ends here
