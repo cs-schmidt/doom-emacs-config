@@ -39,8 +39,11 @@
        ;; NOTE: There are five variables for configuring Doom's fonts:
        ;;      `doom-font', `doom-serif-font', `doom-variable-pitch-font',
        ;;      `doom-big-font', and `doom-unicode-font'.
-       doom-font (font-spec :family "Noto Sans Mono" :size 12)
-       doom-variable-pitch-font (font-spec :family "Noto Sans" :size 12)
+       ;;
+       ;; NOTE: Set `doom-font' to a font which is monospace and includes
+       ;;       italics (e.g., Source Code Pro).
+       doom-font (font-spec :family "Source Code Pro" :size 12)
+       doom-variable-pitch-font (font-spec :family "Source Sans 3" :size 12)
        doom-unicode-font (font-spec :family "Noto Color Emoji"))
 
 ;; Adjusts the opacity of frames: both active and inactive.
@@ -82,8 +85,6 @@
 (setq! display-line-numbers-type t)
 (setq-default fill-column 80)
 (add-hook! '(text-mode-hook prog-mode-hook) #'display-fill-column-indicator-mode)
-;; NOTE: Can prevent images from being displayed in org mode.
-;; (setq! image-file-name-extensions (delete "svg" image-file-name-extensions))
 
 ;;; Research
 ;; ----------------------------------------------------------------------
@@ -99,12 +100,17 @@
     '(org-level-1        ((t . ((:inherit outline-1 :height 1.3)))))
     '(org-level-2        ((t . ((:inherit outline-2 :height 1.2)))))
     '(org-level-3        ((t . ((:inherit outline-3 :height 1.1))))))
-  ;; NOTE: `org-directory' should be the directory where PKMS notes ("entires").
+  ;; NOTE: `org-directory' should be the directory for PKMS notes ("entires").
   (setq! org-directory "~/Research/processing/"
          org-startup-folded nil
          org-startup-indented nil
          org-startup-with-latex-preview t
          org-startup-with-inline-images t
+         org-emphasis-regexp-components '("-[:space:]('\"{"
+                                          "-[:space:].,:!?;'\")}\\["
+                                          "[:space:]"
+                                          "."
+                                          3)
          org-pretty-entities t
          org-hide-emphasis-markers t
          org-fontify-quote-and-verse-blocks t
@@ -138,7 +144,7 @@
   (org-modern-horizontal-rule nil)
   (org-modern-internal-target '("" t ""))
   :config
-  ;; (custom-theme-set-faces!
+  ;; (custom-theme-set-faces
   ;;   'user '(org-modern-internal-target ((t . ((:inherit pkms/org-link-id))))))
   (global-org-modern-mode))
 
