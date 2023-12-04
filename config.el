@@ -85,18 +85,20 @@
 ;; ----------------------------------------------------------------------
 (after! org
   ;; Custom org-mode-specific font faces.
-  (defface pkms/org-link-id '((t :inherit org-link :bold nil :underline nil))
+  (defface pkms/org-link-id '((t :inherit link :bold nil :underline nil))
     "Face for `org-mode' links prefixed with 'id:'."
     :group 'org-faces)
   (defface pkms/org-link-cite
-    '((t :inherit org-link :bold nil :underline nil :foreground "#98be65"))
+    '((t :inherit link :bold nil :underline nil :foreground "#98be65"))
     "Face for `org-mode' links prefixed with 'cite:'."
     :group 'org-faces)
   (custom-theme-set-faces 'user
     '(org-document-title ((t . ((:height 1.4 :underline nil)))))
     '(org-level-1        ((t . ((:inherit outline-1 :height 1.3)))))
     '(org-level-2        ((t . ((:inherit outline-2 :height 1.2)))))
-    '(org-level-3        ((t . ((:inherit outline-3 :height 1.1))))))
+    '(org-level-3        ((t . ((:inherit outline-3 :height 1.1)))))
+    '(org-link
+      ((t . ((:inherit link :bold nil :underline nil :foreground "#dcaeea"))))))
   ;; Sets org-mode link fonts.
   (org-link-set-parameters "id" :face 'pkms/org-link-id)
   (org-link-set-parameters "cite" :face 'pkms/org-link-cite)
