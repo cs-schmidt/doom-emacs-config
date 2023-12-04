@@ -30,8 +30,8 @@
 ;; Certain functionality uses this information to identify you: GPG
 ;; configuration, email clients, file templates and snippets, etc. It is
 ;; optional.
-(setq! user-full-name "Ethan Schmidt"
-       user-mail-address "ebs.euler@gmail.com")
+;; (setq! user-full-name "John Doe"
+;;        user-mail-address "john@doe.com")
 
 ;;; Doom Settings
 ;; ----------------------------------------------------------------------
@@ -51,15 +51,10 @@
 
 ;;; Package Configuration
 ;; ----------------------------------------------------------------------
-(use-package! treemacs
+(use-package! neotree
   :custom
-  (doom-themes-treemacs-theme "doom-colors")
-  (treemacs-width 30)
-  :init
-  (setq +treemacs-git-mode 'deferred)
-  :config
-  (with-eval-after-load 'doom-themes
-    (doom-themes-treemacs-config)))
+  ;; Enables icons from all-the-icons in neotree.
+  (doom-themes-neotree-file-icons t))
 
 (use-package! projectile
   :custom
@@ -75,9 +70,9 @@
   (lsp-headerline-breadcrumb-enable t)
   (lsp-headerline-breadcrumb-icons-enable t))
 
+;; TODO: Get `hl-todo-mode' to activate in `org-mode'.
 (use-package! hl-todo
   :config
-  (add-hook! org-mode-hook #'hl-todo-mode)
   (global-hl-todo-mode))
 
 ;;; Text Editing
@@ -86,28 +81,35 @@
 (setq-default fill-column 80)
 (add-hook! '(text-mode-hook prog-mode-hook) #'display-fill-column-indicator-mode)
 
-;;; Research
+;;; Knowledge Management
 ;; ----------------------------------------------------------------------
-;; TODO: Improve `org-emphasis-regexp-components', look at `org-emph-re' to view
-;;       the full regex `org-mode' uses to match emphasized text.
 (after! org
+  ;; Custom org-mode-specific font faces.
   (defface pkms/org-link-id '((t :inherit org-link :bold nil :underline nil))
     "Face for `org-mode' links prefixed with 'id:'."
     :group 'org-faces)
-  (org-link-set-parameters "id" :face 'pkms/org-link-id)
+  (defface pkms/org-link-cite
+    '((t :inherit org-link :bold nil :underline nil :foreground "#98be65"))
+    "Face for `org-mode' links prefixed with 'cite:'."
+    :group 'org-faces)
   (custom-theme-set-faces 'user
     '(org-document-title ((t . ((:height 1.4 :underline nil)))))
     '(org-level-1        ((t . ((:inherit outline-1 :height 1.3)))))
     '(org-level-2        ((t . ((:inherit outline-2 :height 1.2)))))
     '(org-level-3        ((t . ((:inherit outline-3 :height 1.1))))))
+  ;; Sets org-mode link fonts.
+  (org-link-set-parameters "id" :face 'pkms/org-link-id)
+  (org-link-set-parameters "cite" :face 'pkms/org-link-cite)
   ;; NOTE: `org-directory' should be the directory for PKMS notes ("entires").
   (setq! org-directory "~/Research/processing/"
          org-startup-folded nil
          org-startup-indented nil
          org-startup-with-latex-preview t
          org-startup-with-inline-images t
-         org-emphasis-regexp-components '("-[:space:]('\"{"
-                                          "-[:space:].,:!?;'\")}\\["
+         ;; TODO: Edit border character string to premit the zero width space
+         ;;       character (I believe this will enable nested emphasis).
+         org-emphasis-regexp-components '("-[:space:]('\"{—"
+                                          "-[:space:].,:!?;'\")}\\[—"
                                           "[:space:]"
                                           "."
                                           3)
@@ -120,20 +122,21 @@
 (after! org-roam
   (setq! org-roam-directory (file-truename "~/Research/notes/")
          org-roam-capture-templates
-         `(("d" "Knowledge node template" plain "%?"
+         `(("d" "knowledge node template" plain "%?"
             :target
             (file+head+olp
-             "${slug}_%<%Y%m%d%H%M%S>.org"
+             "${slug}_%<Y%M%D%H%M%S>.org"
              ,(string-join `("#+FILETAGS: @subject 📝 🌰"
                              "#+TITLE: ${title}"
                              ,(concat (make-string 80 ?-) "\n"))
-                           "\n")
-             ,(string-join `("References"
-                             ,(concat (make-string 80 ?-) "\n"))
-                           "\n"))
-            :unnarrowed t))
+                           "/n")
+             (,(string-join `("References"
+                              ,(concat (make-string 80 ?-) "\n"))
+                            "\n"))
+            :unnarrowed t)))
          org-roam-node-display-template
-         (format "${doom-hierarchy:*} %s" (propertize "${doom-tags: 42}" 'face 'org-tag))))
+         (format "${doom-hierarchy:*} %s"
+                 (propertize "${doom-tags: 56}" 'face 'org-tag))))
 
 (use-package! org-modern
   :after org
@@ -144,8 +147,6 @@
   (org-modern-horizontal-rule nil)
   (org-modern-internal-target '("" t ""))
   :config
-  ;; (custom-theme-set-faces
-  ;;   'user '(org-modern-internal-target ((t . ((:inherit pkms/org-link-id))))))
   (global-org-modern-mode))
 
 (use-package! org-appear
@@ -170,12 +171,12 @@
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
 
+;; TODO: Configure citation workflow.
 ;; (setq! org-cite-csl-styles-dir "~/Zotero/styles")
 ;; (setq! citar-bibliography '("~/Research/zotero.bib"))
-
-;(require 'oc-csl-activate)
-;(setq org-cite-activate-processor 'csl-activate)
-;(add-hook 'org-mode-hook (lambda () (cursor-sensor-mode 1)))
+;; (require 'oc-csl-activate)
+;; (setq org-cite-activate-processor 'csl-activate)
+;; (add-hook 'org-mode-hook (lambda () (cursor-sensor-mode 1)))
 
 ;;; Processes: After Init
 ;; ----------------------------------------------------------------------

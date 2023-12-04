@@ -58,13 +58,17 @@
 ;;
 ;;; Code:
 
-;; (package! org :pin "17608670a4f4e8edb91efe04d86fe80ff9d01b69")
+;; Org Mode Packages
+(package! org-modern)
 (package! org-appear)
 (package! valign)
-(package! org-modern)
-(package! zotxt)
-(package! citeproc)
-;; (package! org-cite-csl-activate :recipe (:host github :repo "andras-simonyi/org-cite-csl-activate"))
 (package! org-roam-ui)
+
+;; TODO: Enable and configure these packages for citation workflow.
+;; (package! citeproc)
+;; (package! org-cite-csl-activate
+;;   :recipe (:host github
+;;            :repo "andras-simonyi/org-cite-csl-activate"))
+;; (package! zotxt)
 
 ;;; packages.el ends here
