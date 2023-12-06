@@ -119,7 +119,7 @@
          org-hide-emphasis-markers t
          org-fontify-quote-and-verse-blocks t
          org-cycle-include-plain-lists 'integrate
-         org-format-latex-options (plist-put org-format-latex-options :scale 1.1)))
+         org-format-latex-options (plist-put org-format-latex-options :scale 0.9)))
 
 (after! org-roam
   (setq! org-roam-directory (file-truename "~/Research/notes/")
