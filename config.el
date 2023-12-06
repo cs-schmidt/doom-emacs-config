@@ -119,23 +119,23 @@
          org-hide-emphasis-markers t
          org-fontify-quote-and-verse-blocks t
          org-cycle-include-plain-lists 'integrate
-         org-format-latex-options (plist-put org-format-latex-options :scale 1.1)))
+         org-format-latex-options (plist-put org-format-latex-options :scale 0.9)))
 
 (after! org-roam
   (setq! org-roam-directory (file-truename "~/Research/notes/")
          org-roam-capture-templates
-         `(("d" "knowledge node template" plain "%?"
+         `(("d" "Knowledge node template." plain "%?"
             :target
             (file+head+olp
-             "${slug}_%<Y%M%D%H%M%S>.org"
+             "${slug}_%<%Y%m%d%H%M%S>.org"
              ,(string-join `("#+FILETAGS: @subject 📝 🌰"
                              "#+TITLE: ${title}"
                              ,(concat (make-string 80 ?-) "\n"))
-                           "/n")
+                           "\n")
              (,(string-join `("References"
                               ,(concat (make-string 80 ?-) "\n"))
-                            "\n"))
-            :unnarrowed t)))
+                            "\n")))
+            :unnarrowed t))
          org-roam-node-display-template
          (format "${doom-hierarchy:*} %s"
                  (propertize "${doom-tags: 56}" 'face 'org-tag))))
@@ -151,14 +151,15 @@
   :config
   (global-org-modern-mode))
 
-(use-package! org-appear
-  :after org
-  :custom
-  (org-appear-autoemphasis t)
-  (org-appear-autolinks t)
-  (org-appear-inside-latex t)
-  :hook
-  (org-mode . org-appear-mode))
+;; BUG: Experiencing an issue with `org-appear' package.
+;; (use-package! org-appear
+;;   :after org
+;;   :custom
+;;   (org-appear-autoemphasis t)
+;;   (org-appear-autolinks t)
+;;   (org-appear-inside-latex t)
+;;   :hook
+;;   (org-mode . org-appear-mode))
 
 (use-package! valign
   :after org
