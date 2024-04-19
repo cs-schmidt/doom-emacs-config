@@ -36,12 +36,7 @@
 ;;; Doom Settings
 ;; ----------------------------------------------------------------------
 (setq! doom-theme 'doom-one
-       ;; NOTE: There are five variables for configuring Doom's fonts:
-       ;;      `doom-font', `doom-serif-font', `doom-variable-pitch-font',
-       ;;      `doom-big-font', and `doom-unicode-font'.
-       ;;
-       ;; NOTE: Set `doom-font' to a font which is monospace and includes
-       ;;       italics (e.g., Source Code Pro).
+       ;; NOTE: Set `doom-font' to a monospace font which includes italics.
        doom-font (font-spec :family "Source Code Pro" :size 12)
        doom-variable-pitch-font (font-spec :family "Source Sans 3" :size 12)
        doom-unicode-font (font-spec :family "Noto Color Emoji"))
@@ -51,15 +46,9 @@
 
 ;;; Package Configuration
 ;; ----------------------------------------------------------------------
-(use-package! neotree
-  :custom
-  ;; Enables icons from all-the-icons in neotree.
-  (doom-themes-neotree-file-icons t))
-
 (use-package! projectile
   :custom
-  (projectile-project-search-path '(("~/Work/" . 1)
-                                    ("~/Projects/" . 1)))
+  (projectile-project-search-path '(("~/Work/" . 1) ("~/Projects/" . 1)))
   :config
   (when (equal projectile-project-search-path nil)
     (projectile-discover-projects-in-search-path)))
@@ -79,12 +68,12 @@
 ;; ----------------------------------------------------------------------
 (setq! display-line-numbers-type t)
 (setq-default fill-column 80)
-(add-hook! '(text-mode-hook prog-mode-hook) #'display-fill-column-indicator-mode)
+(add-hook!
+ '(text-mode-hook prog-mode-hook) #'display-fill-column-indicator-mode)
 
 ;;; Knowledge Management
 ;; ----------------------------------------------------------------------
 (after! org
-  ;; Custom org-mode-specific font faces.
   (defface pkms/org-link-id '((t :inherit link :bold nil :underline nil))
     "Face for `org-mode' links prefixed with 'id:'."
     :group 'org-faces)
@@ -99,7 +88,7 @@
     '(org-level-3        ((t . ((:inherit outline-3 :height 1.1)))))
     '(org-link
       ((t . ((:inherit link :bold nil :underline nil :foreground "#dcaeea"))))))
-  ;; Sets org-mode link fonts.
+  ;; Sets fonts for `org-mode' links.
   (org-link-set-parameters "id" :face 'pkms/org-link-id)
   (org-link-set-parameters "cite" :face 'pkms/org-link-cite)
   ;; NOTE: `org-directory' should be the directory for PKMS notes ("entires").
@@ -119,26 +108,27 @@
          org-hide-emphasis-markers t
          org-fontify-quote-and-verse-blocks t
          org-cycle-include-plain-lists 'integrate
-         org-format-latex-options (plist-put org-format-latex-options :scale 0.9)))
+         org-format-latex-options (plist-put
+                                   org-format-latex-options :scale 0.9)))
 
 (after! org-roam
-  (setq! org-roam-directory (file-truename "~/Research/notes/")
-         org-roam-capture-templates
-         `(("d" "Knowledge node template." plain "%?"
-            :target
-            (file+head+olp
-             "${slug}_%<%Y%m%d%H%M%S>.org"
-             ,(string-join `("#+FILETAGS: @subject 📝 🌰"
-                             "#+TITLE: ${title}"
+ (setq! org-roam-directory (file-truename "~/Research/notes/")
+        org-roam-capture-templates
+        `(("d" "Knowledge node template." plain "%?"
+           :target
+           (file+head+olp
+            "${slug}_%<%Y%m%d%H%M%S>.org"
+            ,(string-join `("#+FILETAGS: @subject 📝 🌰"
+                            "#+TITLE: ${title}"
+                            ,(concat (make-string 80 ?-) "\n"))
+                          "\n")
+            (,(string-join `("References"
                              ,(concat (make-string 80 ?-) "\n"))
-                           "\n")
-             (,(string-join `("References"
-                              ,(concat (make-string 80 ?-) "\n"))
-                            "\n")))
-            :unnarrowed t))
-         org-roam-node-display-template
-         (format "${doom-hierarchy:*} %s"
-                 (propertize "${doom-tags: 56}" 'face 'org-tag))))
+                           "\n")))
+           :unnarrowed t))
+        org-roam-node-display-template
+        (format "${doom-hierarchy:*} %s"
+                (propertize "${doom-tags: 56}" 'face 'org-tag))))
 
 (use-package! org-modern
   :after org
@@ -149,17 +139,19 @@
   (org-modern-horizontal-rule nil)
   (org-modern-internal-target '("" t ""))
   :config
+  (custom-theme-set-faces 'user
+    '(org-modern-internal-target
+      ((t . ((:inherit link :bold nil :underline nil :foreground "#ecbe7b"))))))
   (global-org-modern-mode))
 
-;; BUG: Experiencing an issue with `org-appear' package.
-;; (use-package! org-appear
-;;   :after org
-;;   :custom
-;;   (org-appear-autoemphasis t)
-;;   (org-appear-autolinks t)
-;;   (org-appear-inside-latex t)
-;;   :hook
-;;   (org-mode . org-appear-mode))
+(use-package! org-appear
+  :after org
+  :custom
+  (org-appear-autolinks t)
+  (org-appear-autoemphasis t)
+  (org-appear-inside-latex t)
+  :hook
+  (org-mode . org-appear-mode))
 
 (use-package! valign
   :after org
