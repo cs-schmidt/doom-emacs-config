@@ -35,23 +35,26 @@
 
 ;;; Doom Settings
 ;; ----------------------------------------------------------------------
-(setq! doom-theme 'doom-one
-       ;; NOTE: Set `doom-font' to a monospace font which includes italics.
+;; Adjusts frame opacity independent of foreground elements (e.g., text).
+(add-to-list 'default-frame-alist '(alpha-background . 85))
+
+(setopt doom-theme 'doom-one
+       ;; NOTE: Set `doom-font' to a monospace font that supports italics.
        doom-font (font-spec :family "Source Code Pro" :size 12)
        doom-variable-pitch-font (font-spec :family "Source Sans 3" :size 12)
        doom-unicode-font (font-spec :family "Noto Color Emoji"))
-
-;; Adjusts the opacity of frames: both active and inactive.
-(add-to-list 'default-frame-alist '(alpha . (90 90)))
 
 ;;; Package Configuration
 ;; ----------------------------------------------------------------------
 (use-package! projectile
   :custom
-  (projectile-project-search-path '(("~/Work/" . 1) ("~/Projects/" . 1)))
+  (projectile-project-search-path
+   '(("~/Career/" . 3)
+     ("~/Finance/Projects/" . 1)
+     ("~/Education/Projects/" . 1)
+     ("~/Projects/" . 1)))
   :config
-  (when (equal projectile-project-search-path nil)
-    (projectile-discover-projects-in-search-path)))
+  (projectile-discover-projects-in-search-path))
 
 ;; TODO: Add custom keybindings to lsp-mode.
 (use-package! lsp
@@ -59,15 +62,16 @@
   (lsp-headerline-breadcrumb-enable t)
   (lsp-headerline-breadcrumb-icons-enable t))
 
-;; TODO: Get `hl-todo-mode' to activate in `org-mode'.
 (use-package! hl-todo
+  :custom
+  (hl-todo-exclude-modes nil)
   :config
   (global-hl-todo-mode))
 
 ;;; Text Editing
 ;; ----------------------------------------------------------------------
-(setq! display-line-numbers-type t)
-(setq-default fill-column 80)
+(setq-default evil-shift-width 2)
+(setq-default fill-column 90)
 (add-hook!
  '(text-mode-hook prog-mode-hook) #'display-fill-column-indicator-mode)
 
@@ -92,18 +96,17 @@
   (org-link-set-parameters "id" :face 'pkms/org-link-id)
   (org-link-set-parameters "cite" :face 'pkms/org-link-cite)
   ;; NOTE: `org-directory' should be the directory for PKMS notes ("entires").
-  (setq! org-directory "~/Research/processing/"
-         org-startup-folded nil
-         org-startup-indented nil
-         org-startup-with-latex-preview t
-         org-startup-with-inline-images t
-         ;; TODO: Edit border character string to premit the zero width space
-         ;;       character (I believe this will enable nested emphasis).
-         org-emphasis-regexp-components '("-[:space:]('\"{—"
-                                          "-[:space:].,:!?;'\")}\\[—"
-                                          "[:space:]"
-                                          "."
-                                          3)
+  (setopt org-startup-folded 'showeverything
+          org-startup-indented nil
+          org-startup-with-latex-preview t
+          org-startup-with-inline-images t
+          ;; TODO: Edit border character string to premit the zero width space
+          ;;       character (I believe this will enable nested emphasis).
+          org-emphasis-regexp-components '("-[:space:]('\"{—"
+                                           "-[:space:].,:!?;'\")}\\[—"
+                                           "[:space:]"
+                                           "."
+                                           3)
          org-pretty-entities t
          org-hide-emphasis-markers t
          org-fontify-quote-and-verse-blocks t
@@ -112,23 +115,23 @@
                                    org-format-latex-options :scale 0.9)))
 
 (after! org-roam
- (setq! org-roam-directory (file-truename "~/Research/notes/")
-        org-roam-capture-templates
-        `(("d" "Knowledge node template." plain "%?"
-           :target
-           (file+head+olp
-            "${slug}_%<%Y%m%d%H%M%S>.org"
-            ,(string-join `("#+FILETAGS: @subject 📝 🌰"
-                            "#+TITLE: ${title}"
-                            ,(concat (make-string 80 ?-) "\n"))
-                          "\n")
-            (,(string-join `("References"
-                             ,(concat (make-string 80 ?-) "\n"))
-                           "\n")))
-           :unnarrowed t))
-        org-roam-node-display-template
-        (format "${doom-hierarchy:*} %s"
-                (propertize "${doom-tags: 56}" 'face 'org-tag))))
+  (setopt org-roam-directory (file-truename "~/Education/kms/temp/old-vault/notes/")
+          org-roam-capture-templates
+          `(("d" "Knowledge node template." plain "%?"
+            :target
+            (file+head+olp
+              "${slug}_%<%Y%m%d%H%M%S>.org"
+              ,(string-join `("#+FILETAGS: @subject 📝 🌰"
+                              "#+TITLE: ${title}"
+                              ,(concat (make-string 80 ?-) "\n"))
+                            "\n")
+              (,(string-join `("References"
+                              ,(concat (make-string 80 ?-) "\n"))
+                            "\n")))
+            :unnarrowed t))
+          org-roam-node-display-template
+          (format "${doom-hierarchy:*} %s"
+                  (propertize "${doom-tags: 56}" 'face 'org-tag))))
 
 (use-package! org-modern
   :after org
@@ -166,21 +169,11 @@
         org-roam-ui-update-on-save t
         org-roam-ui-open-on-start t))
 
-;; TODO: Configure citation workflow.
-;; (setq! org-cite-csl-styles-dir "~/Zotero/styles")
-;; (setq! citar-bibliography '("~/Research/zotero.bib"))
-;; (require 'oc-csl-activate)
-;; (setq org-cite-activate-processor 'csl-activate)
-;; (add-hook 'org-mode-hook (lambda () (cursor-sensor-mode 1)))
-
 ;;; Processes: After Init
 ;; ----------------------------------------------------------------------
 (defun user/after-init-hook ()
   "Executes code that must be loaded after Emacs executes init.el"
   (solaire-global-mode -1))
-
-(defun user/disable-visual-line-mode ()
-  (visual-line-mode -1))
 
 (after! which-key
   (setq which-key-idle-delay 0.25))

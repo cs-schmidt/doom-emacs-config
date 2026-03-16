@@ -1,10 +1,10 @@
 <h1 align="center">Doom Emacs Configuration</h1>
 
 <p align="center">
-  <i>My ever-evolving configuration for <a href="https://github.com/doomemacs/doomemacs" alt="Doom Emacs repository.">Doom Emacs</a>.</i>
+  <i>My ever-evolving configuration for 
+    <a href="https://github.com/doomemacs/doomemacs">Doom Emacs</a>.
+  </i>
 </p>
-
----
 
 ## License
 MIT License

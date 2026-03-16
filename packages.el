@@ -64,11 +64,4 @@
 (package! valign)
 (package! org-roam-ui)
 
-;; TODO: Enable and configure these packages for citation workflow.
-;; (package! citeproc)
-;; (package! org-cite-csl-activate
-;;   :recipe (:host github
-;;            :repo "andras-simonyi/org-cite-csl-activate"))
-;; (package! zotxt)
-
 ;;; packages.el ends here
