@@ -1,3 +1,2 @@
-# Node.js folder and file ignores.
-**/node_modules/
-
+# Dependencies
+node_modules/

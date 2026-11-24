@@ -2,16 +2,15 @@
 ;;
 ;;; Commentary:
 ;;
-;; Contains the `doom!' block which sets what Doom modules to enable and in what
-;; order they will they'll be loaded. This file loads early in Doom's startup
-;; process, before any other module has loaded. You must run `doom sync` from
-;; the command line and restart Emacs, or `doom/reload' to enable the changes
-;; made here.
+;; Contains the `doom!' block which sets what Doom modules to enable and in what order
+;; they will they'll be loaded. This file loads early in Doom's startup process, before
+;; any other module has loaded. You must run `doom sync` from the command line and restart
+;; Emacs, or `doom/reload' to enable the changes made here.
 ;;
-;; In general, you should only edit the `doom!' block. If you need to configure
-;; something very early in Doom's startup process, then it's usually better to
-;; use an `early-init.el` file (loading before doom), `doom-before-init-hook',
-;; or `before-init-hook'. See Doom's load order to make the best choice.
+;; In general, you should only edit the `doom!' block. If you need to configure something
+;; very early in Doom's startup process, then it's usually better to use an
+;; `early-init.el` file (loading before doom), `doom-before-init-hook', or
+;; `before-init-hook'. See Doom's load order to make the best choice.
 ;;
 ;;; Code:
 
@@ -92,7 +91,7 @@
        ;;direnv
        ;;docker
        ;;editorconfig      ; let someone else argue about tabs vs spaces
-       ;;ein               ; tame Jupyter notebooks with emacs
+       ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        lookup              ; navigate your code and its documentation
@@ -158,7 +157,7 @@
        ;;php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       python            ; beautiful is better than ugly
+       (python +lsp +pyright)            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6

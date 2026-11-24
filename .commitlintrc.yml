@@ -1,4 +1,1 @@
-# Lists the commitlint configurations where properties are being inherited.
-extends:
-  - '@commitlint/config-conventional'  # "Conventional Commits" standard
-
+extends: ['@commitlint/config-conventional']
