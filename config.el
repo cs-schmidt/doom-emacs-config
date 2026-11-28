@@ -73,7 +73,7 @@
 ;;; Knowledge Management
 ;; ----------------------------------------------------------------------
 
-(setq org-directory "~/Education/kms/vault-old/"
+(setq org-directory "~/Education/kms/vault-org/"
       ;; TODO: Edit border character string to premit the zero width space character (I
       ;;       believe this will enable nested emphasis).
       org-emphasis-regexp-components '("-[:space:]('\"{—"
@@ -113,7 +113,8 @@
           org-format-latex-options (plist-put org-format-latex-options :scale 0.9)))
 
 (after! org-roam
-  (setopt org-roam-capture-templates
+  (setopt org-roam-directory org-directory
+          org-roam-capture-templates
           `(("d" "Knowledge node template." plain
              ,(string-join `("%?"
                              ""
